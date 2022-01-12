@@ -1,0 +1,66 @@
+package pdfact.core.util.pipeline;
+
+import pdfact.core.model.Document;
+import pdfact.core.util.exception.PdfActException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A plain implementation of {@link Pipeline}.
+ *
+ * @author Claudius Korzen
+ */
+public class PlainPipeline implements Pipeline {
+    /**
+     * The registered pipes.
+     */
+    protected List<Pipe> pipes;
+
+    /**
+     * Creates an empty pipeline.
+     */
+    public PlainPipeline() {
+        this.pipes = new ArrayList<>();
+    }
+
+    // ==============================================================================================
+
+    @Override
+    public Document process(Document pdf) throws PdfActException {
+        Document processed = pdf;
+        for (Pipe pipe : this.pipes) {
+            processed = pipe.execute(processed);
+        }
+        return processed;
+    }
+
+    // ==============================================================================================
+
+    @Override
+    public List<Pipe> getPipes() {
+        return this.pipes;
+    }
+
+    @Override
+    public void setPipes(List<Pipe> pipes) {
+        this.pipes = pipes;
+    }
+
+    @Override
+    public void addPipes(List<Pipe> pipes) {
+        this.pipes.addAll(pipes);
+    }
+
+    @Override
+    public void addPipe(Pipe pipe) {
+        this.pipes.add(pipe);
+    }
+
+    // ==============================================================================================
+
+    @Override
+    public int size() {
+        return this.pipes != null ? this.pipes.size() : 0;
+    }
+}

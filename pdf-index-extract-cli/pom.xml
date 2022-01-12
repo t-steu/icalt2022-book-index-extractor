@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>pdf-index-extract</groupId>
+        <artifactId>pdf-index-extract-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>pdf-index-extract-cli</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+    <properties>
+        <!-- Define some dir paths. -->
+        <project.dirs.resources>${project.basedir}/src/main/resources</project.dirs.resources>
+
+        <!-- Define some file paths -->
+        <project.files.jar>${project.root.dirs.bin}/${project.basename}.jar</project.files.jar>
+        <project.files.executable>${project.root.dirs.bin}/${project.basename}</project.files.executable>
+        <project.files.stub_sh>${project.dirs.resources}/stub.sh</project.files.stub_sh>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>pdf-index-extract</groupId>
+            <artifactId>pdf-index-extract-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.argparse4j</groupId>
+            <artifactId>argparse4j</artifactId>
+            <version>0.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Configure the assembly plugin to create an executable jar-file with
+            all dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <id>build-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>pdfact.cli.PdfActCli</mainClass>
+                                </manifest>
+                                <manifestEntries>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <outputDirectory>${project.root.dirs.bin}</outputDirectory>
+                            <finalName>${project.basename}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <attach>false</attach>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+              Configure the antrun plugin to create an executable resulting from the concatenation
+              of resources/stub.sh and the produced jar file. This will allow the jar-file to be
+              executable like a Linux executable file (without typing java -jar ...).
+            -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Concat stub.sh and the jar file to ./bin/pdfact -->
+                                <concat destfile="${project.files.executable}" binary="yes">
+                                    <fileset file="${project.files.stub_sh}"/>
+                                    <fileset file="${project.files.jar}"/>
+                                </concat>
+                                <!-- Make the script executable. -->
+                                <chmod file="${project.files.executable}" perm="755"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
