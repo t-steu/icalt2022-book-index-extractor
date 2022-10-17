@@ -22,10 +22,10 @@ Yields an output file of the form:
 
 ## Evaluation Results
 
-We evaluated the tool on a collection of 150 books crawled from SpringerLink
+We evaluated the tool on a collection of books crawled from SpringerLink
 against the corresponding index extracted from the related EPUB file.
 
-The ISBNs of the evaluated books can be found `evaluation-isbns.csv`.
+The ISBNs of the books considered for eval (if they had an epub at time of the study) can be found `evaluation-isbns.csv`.
 
 | Avg-Precision  | Avg-Recall | Avg-Macro-F1 | 
 | -----| -------- | ------ | 
