@@ -51,6 +51,22 @@ Therefore, the number of books in the files differs slightly from the number rep
 
 We submitted a paper to IEEE ICALT describing the index extractor and its use for automatic corpus construction.
 
+> T. Steuer, A. Filighera, N. Mouhammad, G. Zimmer and T. Tregel, "Learning-Relevant Concept Extraction By Utilizing Automatically Generated Textbook Corpora," International Conference on Advanced Learning Technologies (ICALT), 2022, pp. 379-383, doi: 10.1109/ICALT55010.2022.00117.
+
+```
+    @INPROCEEDINGS{steuer-icalt-2022,
+        author={Steuer, Tim and Filighera, Anna and Mouhammad, Nina and Zimmer, Gianluca and Tregel, Thomas},
+        booktitle={International Conference on Advanced Learning Technologies (ICALT)}, 
+        title={Learning-Relevant Concept Extraction By Utilizing Automatically Generated Textbook Corpora}, 
+        year={2022},
+        volume={},
+        number={},
+        pages={379-383},
+        doi={10.1109/ICALT55010.2022.00117}
+   }
+```
+
+
 ## Acknowledgements
 
 The tool was built en-top of the great [PDFAct](https://github.com/ad-freiburg/pdfact) by Hannah Bast / Claudius Korzen
